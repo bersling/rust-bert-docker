@@ -1,12 +1,14 @@
 FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH \
     RUST_VERSION=1.64.0
 
 RUN apt-get update
-RUN apt-get install wget -y
+RUN apt-get install pkg-config wget libssl-dev -yq
 
 RUN set -eux; \
     dpkgArch="$(dpkg --print-architecture)"; \
