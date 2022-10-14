@@ -12,10 +12,10 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 RUN apt-get update
 RUN apt-get install pkg-config wget libssl-dev unzip -yq
 
-#RUN wget https://download.pytorch.org/libtorch/cu116/libtorch-cxx11-abi-shared-with-deps-1.12.0%2Bcu116.zip
-#RUN unzip libtorch-cxx11-abi-shared-with-deps-1.12.0+cu116.zip
-#ENV LIBTORCH=/server-in-container/libtorch
-#ENV LD_LIBRARY_PATH=${LIBTORCH}/lib:$LD_LIBRARY_PATH
+RUN wget https://download.pytorch.org/libtorch/cu116/libtorch-cxx11-abi-shared-with-deps-1.12.0%2Bcu116.zip
+RUN unzip libtorch-cxx11-abi-shared-with-deps-1.12.0+cu116.zip
+ENV LIBTORCH=/server-in-container/libtorch
+ENV LD_LIBRARY_PATH=${LIBTORCH}/lib:$LD_LIBRARY_PATH
 
 RUN set -eux; \
     dpkgArch="$(dpkg --print-architecture)"; \
