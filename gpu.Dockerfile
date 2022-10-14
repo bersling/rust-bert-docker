@@ -1,6 +1,6 @@
 FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04
 
-ENV DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
@@ -42,4 +42,6 @@ WORKDIR /server-in-container
 COPY Cargo.toml /server-in-container/Cargo.toml
 COPY Cargo.lock /server-in-container/Cargo.lock
 COPY src /server-in-container/src
-RUN cargo run
+
+RUN cargo build # TODO: add --release
+ENTRYPOINT ["/server-in-container/target/debug/rust-bert-microservice"]
