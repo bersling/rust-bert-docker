@@ -8,7 +8,12 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     RUST_VERSION=1.64.0
 
 RUN apt-get update
-RUN apt-get install pkg-config wget libssl-dev -yq
+RUN apt-get install pkg-config wget libssl-dev unzip -yq
+
+RUN wget https://download.pytorch.org/libtorch/cu116/libtorch-cxx11-abi-shared-with-deps-1.12.0%2Bcu116.zip
+RUN unzip libtorch-cxx11-abi-shared-with-deps-1.12.0+cu116.zip
+ENV LIBTORCH=$(pwd)/libtorch
+ENV LD_LIBRARY_PATH=${LIBTORCH}/lib:$LD_LIBRARY_PATH
 
 RUN set -eux; \
     dpkgArch="$(dpkg --print-architecture)"; \
@@ -30,13 +35,8 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-# Currently we rely on this being built in-project with the ./build.sh which sets up a few things for us already.
-#ARG REF=master
-#RUN git clone https://github.com/guillaume-be/rust-bert
-#RUN git checkout $REF
-
 # Omit this argument for CPU build
-ARG TORCH_CUDA_VERSION="cu113"
+# ARG TORCH_CUDA_VERSION="cu113"
 
 WORKDIR /server-in-container
 COPY Cargo.toml /server-in-container/Cargo.toml
