@@ -45,4 +45,10 @@ COPY Cargo.lock /server-in-container/Cargo.lock
 COPY src /server-in-container/src
 
 RUN cargo build # TODO: add --release
+
+ENV ROCKET_ADDRESS=0.0.0.0
+ENV ROCKET_PORT=8000
+
+EXPOSE 8000
+
 ENTRYPOINT ["/server-in-container/target/debug/rust-bert-docker"]
