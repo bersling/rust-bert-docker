@@ -8,5 +8,5 @@ set -e
 set -u
 
 docker stop rust-bert
-docker system prune -y
+docker system prune --force
 docker build --no-cache --name rust-bert -t bersling/rust-bert-cpu -f cpu.Dockerfile .
