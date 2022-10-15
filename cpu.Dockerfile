@@ -45,4 +45,4 @@ COPY Cargo.lock /server-in-container/Cargo.lock
 COPY src /server-in-container/src
 
 RUN cargo build # TODO: add --release
-ENTRYPOINT ["/server-in-container/target/debug/rust-bert-microservice"]
+ENTRYPOINT ["/server-in-container/target/debug/rust-bert-docker"]
