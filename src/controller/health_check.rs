@@ -2,12 +2,13 @@ use rust_bert::distilbert::{DistilBertConfigResources, DistilBertModelResources,
 use rust_bert::pipelines::common::ModelType;
 use rust_bert::pipelines::common::ModelType::DistilBert;
 use rust_bert::pipelines::sequence_classification::Label;
-use rust_bert::pipelines::zero_shot_classification::{ZeroShotClassificationConfig, ZeroShotClassificationModel};
+use rust_bert::pipelines::zero_shot_classification::{ZeroShotClassificationConfig, ZeroShotClassificationModel, ZeroShotClassificationOption};
 use rust_bert::resources::RemoteResource;
 
 use blocking::unblock;
 use rocket::serde::json::Json;
 use rocket::serde::Serialize;
+use tch::Device;
 
 #[derive(Serialize)]
 pub struct HealthCheckResponse {
@@ -48,7 +49,7 @@ pub async fn health_check_zero_shot() -> Json<ZeroShotResponse> {
             lower_case: false,
             strip_accents: None,
             add_prefix_space: None,
-            device: // FIXME: how can i pass device?
+            device: Device::cuda_if_available()
         };
 
         let sequence_classification_model = ZeroShotClassificationModel::new(Default::default()).unwrap();
