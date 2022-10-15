@@ -1,12 +1,21 @@
 FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04
 
+WORKDIR /server-in-container
+
+ARG DEBIAN_FRONTEND=noninteractive
+
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH \
     RUST_VERSION=1.64.0
 
 RUN apt-get update
-RUN apt-get install wget -y
+RUN apt-get install pkg-config wget libssl-dev unzip -yq
+
+RUN wget https://download.pytorch.org/libtorch/cu116/libtorch-cxx11-abi-shared-with-deps-1.12.0%2Bcu116.zip
+RUN unzip libtorch-cxx11-abi-shared-with-deps-1.12.0+cu116.zip
+ENV LIBTORCH=/server-in-container/libtorch
+ENV LD_LIBRARY_PATH=${LIBTORCH}/lib:$LD_LIBRARY_PATH
 
 RUN set -eux; \
     dpkgArch="$(dpkg --print-architecture)"; \
@@ -28,16 +37,18 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-# Currently we rely on this being built in-project with the ./build.sh which sets up a few things for us already.
-#ARG REF=master
-#RUN git clone https://github.com/guillaume-be/rust-bert
-#RUN git checkout $REF
-
 # Omit this argument for CPU build
-ARG TORCH_CUDA_VERSION="cu113"
+# ARG TORCH_CUDA_VERSION="cu113"
 
-WORKDIR /server-in-container
 COPY Cargo.toml /server-in-container/Cargo.toml
 COPY Cargo.lock /server-in-container/Cargo.lock
 COPY src /server-in-container/src
-RUN cargo run
+
+RUN cargo build # TODO: add --release
+
+ENV ROCKET_ADDRESS=0.0.0.0
+ENV ROCKET_PORT=8000
+
+EXPOSE 8000
+
+ENTRYPOINT ["/server-in-container/target/debug/rust-bert-docker"]

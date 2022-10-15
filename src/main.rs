@@ -1,10 +1,20 @@
-use rust_bert::pipelines::question_answering::{QaInput, QuestionAnsweringModel};
+#[macro_use]
+extern crate rocket;
 
-fn main() {
-    let qa_model = QuestionAnsweringModel::new(Default::default());
+use crate::middleware::cors::CORS;
 
-    let question = String::from("Where does Amy live ?");
-    let context = String::from("Amy lives in Amsterdam");
+mod controller;
+mod service;
+mod middleware;
+mod env;
 
-    let answers = qa_model.unwrap().predict(&[QaInput { question, context }], 1, 32);
+//noinspection ALL
+#[launch]
+fn rocket() -> _ {
+    rocket::build()
+        .mount("/api", routes![controller::health_check::health_check])
+        .mount("/api", routes![controller::health_check::health_check_zero_shot])
+        .mount("/api", routes![controller::haaskme::get_answer])
+        .mount("/api", routes![controller::haaskme::get_answer_options])
+        .attach(CORS)
 }

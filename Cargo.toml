@@ -1,9 +1,23 @@
 [package]
-name = "rust-bert-microservice"
+name = "rust-bert-docker"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+# Required for rust-bert
 rust-bert = "0.19.0"
+
+# Required for the server
+hyper = { version = "^0.14", features = ["full"] }
+hyper-tls = "^0.5"
+tokio = { version = "1", features = ["full"] }
+serde = "^1"
+serde_derive = "^1"
+serde_json = "^1"
+rocket = { version = "0.5.0-rc.2", features = ["json"]}
+
+# Required to run rust-bert inside of async server environment
+blocking = "1.2.0"
