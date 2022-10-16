@@ -7,5 +7,4 @@ echo "## Crash on errors and unset variables ##"
 set -e
 set -u
 
-docker stop rust-bert || true
-docker build --no-cache -t bersling/rust-bert-cpu -f cpu.Dockerfile .
+docker build --no-cache -t rust-bert-server -f Dockerfile .

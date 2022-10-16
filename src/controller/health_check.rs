@@ -1,13 +1,12 @@
+use blocking::unblock;
+use rocket::serde::json::Json;
+use rocket::serde::Serialize;
 use rust_bert::distilbert::{DistilBertConfigResources, DistilBertModelResources, DistilBertVocabResources};
 use rust_bert::pipelines::common::ModelType;
 use rust_bert::pipelines::common::ModelType::DistilBert;
 use rust_bert::pipelines::sequence_classification::Label;
 use rust_bert::pipelines::zero_shot_classification::{ZeroShotClassificationConfig, ZeroShotClassificationModel, ZeroShotClassificationOption};
 use rust_bert::resources::RemoteResource;
-
-use blocking::unblock;
-use rocket::serde::json::Json;
-use rocket::serde::Serialize;
 use tch::Device;
 
 #[derive(Serialize)]
@@ -52,7 +51,7 @@ pub async fn health_check_zero_shot() -> Json<ZeroShotResponse> {
             device: Device::cuda_if_available()
         };
 
-        let sequence_classification_model = ZeroShotClassificationModel::new(Default::default()).unwrap();
+        let sequence_classification_model = ZeroShotClassificationModel::new(config).unwrap();
 
         let input_sentence = "Who are you voting for in 2020?";
         let input_sequence_2 = "The prime minister has announced a stimulus package which was widely criticized by the opposition.";
