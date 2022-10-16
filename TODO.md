@@ -1,3 +1,0 @@
-- [ ] Add a rocket server?
-- [ ] Make microservice talk to the sister project
-- [ ] Remove the git clone stuff and use the crate?!

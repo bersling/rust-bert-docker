@@ -1,5 +1,5 @@
 [package]
-name = "rust-bert-docker"
+name = "rust-bert-server"
 version = "0.1.0"
 edition = "2021"
 
@@ -21,3 +21,6 @@ rocket = { version = "0.5.0-rc.2", features = ["json"]}
 
 # Required to run rust-bert inside of async server environment
 blocking = "1.2.0"
+
+# Used for custom config of rust-bert, since the Device class otherwise isn't exposed
+tch = "0.8.0"
