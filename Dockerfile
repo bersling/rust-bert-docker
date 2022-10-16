@@ -51,4 +51,4 @@ ENV ROCKET_PORT=8000
 
 EXPOSE 8000
 
-ENTRYPOINT ["/server-in-container/target/debug/rust-bert-server"]
+ENTRYPOINT ["/server-in-container/target/release/rust-bert-server"]
