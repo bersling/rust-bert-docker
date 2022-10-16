@@ -11,5 +11,6 @@ I thought instead of deleting this project I'd leave it here since some things c
 - [x] Even the second calls to something like classify take ~5-8 seconds on a CPU. So it didn't seem feasible.
 - [x] There are nlp cloud providers out there. To get started, it might be easier for you too to use one of those.
 - [x] The health-check endpoints are functional on Linux (couldn't make it work on Mac M1).
+- [x] The docker image takes quite long to build. Maybe something like rust chef could help to speed up consecutive builds by leveraging docker layering.
 
 Having said all of that, this project might still serve as a starting or inspiration point for someone. Have fun. :)
