@@ -33,25 +33,28 @@ pub fn health_check() -> Json<HealthCheckResponse> {
 pub async fn health_check_zero_shot() -> Json<ZeroShotResponse> {
 
     let result: Vec<Vec<Label>> = unblock(|| {
-        let config = ZeroShotClassificationConfig {
-            model_type: ModelType::DistilBert,
-            model_resource: Box::new(RemoteResource::from_pretrained(
-                DistilBertModelResources::DISTIL_BERT,
-            )),
-            config_resource: Box::new(RemoteResource::from_pretrained(
-                DistilBertConfigResources::DISTIL_BERT,
-            )),
-            vocab_resource: Box::new(RemoteResource::from_pretrained(
-                DistilBertVocabResources::DISTIL_BERT,
-            )),
-            merges_resource: None, // is this ok?
-            lower_case: false,
-            strip_accents: None,
-            add_prefix_space: None,
-            device: Device::cuda_if_available()
-        };
 
-        let sequence_classification_model = ZeroShotClassificationModel::new(config).unwrap();
+        // FIXME: this isn't working, error:
+        // thread 'blocking-6' panicked at 'id2label must be provided for classifiers', /usr/local/cargo/registry/src/github.com-1ecc6299db9ec823/rust-bert-0.19.0/src/distilbert/distilbert_model.rs:303:14
+        // let config = ZeroShotClassificationConfig {
+        //     model_type: ModelType::DistilBert,
+        //     model_resource: Box::new(RemoteResource::from_pretrained(
+        //         DistilBertModelResources::DISTIL_BERT,
+        //     )),
+        //     config_resource: Box::new(RemoteResource::from_pretrained(
+        //         DistilBertConfigResources::DISTIL_BERT,
+        //     )),
+        //     vocab_resource: Box::new(RemoteResource::from_pretrained(
+        //         DistilBertVocabResources::DISTIL_BERT,
+        //     )),
+        //     merges_resource: None, // is this ok?
+        //     lower_case: false,
+        //     strip_accents: None,
+        //     add_prefix_space: None,
+        //     device: Device::cuda_if_available()
+        // };
+
+        let sequence_classification_model = ZeroShotClassificationModel::new(Default::default()).unwrap();
 
         let input_sentence = "Who are you voting for in 2020?";
         let input_sequence_2 = "The prime minister has announced a stimulus package which was widely criticized by the opposition.";
