@@ -7,4 +7,4 @@ echo "## Crash on errors and unset variables ##"
 set -e
 set -u
 
-docker build --no-cache -t rust-bert-server -f Dockerfile .
+docker build -t rust-bert-server -f Dockerfile .
